@@ -42,7 +42,7 @@ $(function() {
     var snapshot = this;
     s3.upload({
       Key: 'some-file-name',
-      Body: file
+      Body: imageBlob
     }, function(err, data) {
       if (err) {
         return alert('There was an error uploading your photo: ', err.message);
