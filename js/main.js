@@ -41,7 +41,7 @@ $(function() {
     console.log('Uploading snapshot... ');
     var snapshot = this;
     s3.upload({
-      Key: 'some-file-name',
+      Key: 'snapshot-' + Math.floor(Date.now() / 1000),
       Body: imageBlob
     }, function(err, data) {
       if (err) {
