@@ -23,13 +23,18 @@
         It's free.
       </div>
     </div>
+    <button id="take_snapshots">Take more snapshots</button>
+        <button id="show_stream">Show stream</button><br>
 
-    <script>
-      var camera = new JpegCamera("#camera");
+        <div id="snapshots"></div>
 
-      var snapshot = camera.capture();
+        <button id="discard_snapshot">Discard snapshot</button>
+        
 
-      snapshot.show(); // Display the snapshot
-    </script>
+       <!--
+          <button id="upload_snapshot">Upload to URL</button><br>
+        <input type="text" id="api_url" placeholder="https://example.com/upload"><br>-->
+     
+      
   </body>
 </html>
