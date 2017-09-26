@@ -70,7 +70,7 @@ $(function() {
 
   var configureS3 = function() {
     AWS.config.update({
-        region: 'eu-west-1',
+        region: 'us-east-1',
         credentials: new AWS.CognitoIdentityCredentials({
           IdentityPoolId: 'eu-west-1:15e3a03b-1812-4037-8ae5-1da763037863'
         })
