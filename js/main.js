@@ -2,7 +2,6 @@ $(function() {
   
   var camera;
   var s3;
-
   var bucketName = 'aws-hackaton-uploads'
   var options = {
     shutter_ogg_url: "jpeg_camera/shutter.ogg",
@@ -40,10 +39,12 @@ $(function() {
   };
 
   var upload_snapshot = function(imageBlob) {
+    console.log('Uploading snapshot... ');
     var snapshot = this;
     var params = {Bucket: bucketName, Key: 'key', Body: imageBlob};
     s3.upload(params, function(err, data) {
-        console.log(err, data);
+      console.log('Error while uploading snapshot');
+      console.log(err, data);
     });
   };
 
@@ -75,5 +76,4 @@ $(function() {
   };
 
   s3 = configureS3();
-
-})
+});
