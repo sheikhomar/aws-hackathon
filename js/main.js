@@ -2,7 +2,9 @@ $(function() {
   
   var camera;
   var s3;
-  var bucketName = 'fantastic-four';
+
+  //var bucketName = 'fantastic-four'; var region = 'us-east-1';
+  var bucketName = 'aws-hackaton-uploads';var region = 'eu-west-1';
   var options = {
     shutter_ogg_url: "jpeg_camera/shutter.ogg",
     shutter_mp3_url: "jpeg_camera/shutter.mp3",
@@ -71,7 +73,7 @@ $(function() {
 
   var configureS3 = function() {
     AWS.config.update({
-        region: 'us-east-1',
+        region: region,
         credentials: new AWS.CognitoIdentityCredentials({
           IdentityPoolId: 'eu-west-1:15e3a03b-1812-4037-8ae5-1da763037863'
         })
