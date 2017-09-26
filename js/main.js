@@ -2,7 +2,7 @@ $(function() {
   
   var camera;
   var s3;
-  var bucketName = 'aws-hackaton-uploads'
+  var bucketName = 'fantastic-four';
   var options = {
     shutter_ogg_url: "jpeg_camera/shutter.ogg",
     shutter_mp3_url: "jpeg_camera/shutter.mp3",
@@ -41,13 +41,18 @@ $(function() {
   var upload_snapshot = function(imageBlob) {
     console.log('Uploading snapshot... ');
     var snapshot = this;
+    var imageName = 'snapshot-' + Math.floor(Date.now() / 1000);
     s3.upload({
-      Key: 'snapshot-' + Math.floor(Date.now() / 1000),
+      Key: imageName,
       Body: imageBlob
     }, function(err, data) {
       if (err) {
         return alert('There was an error uploading your photo: ', err.message);
       }
+      var url = 'https://nwxtvslk82.execute-api.us-east-1.amazonaws.com/prod/ff/recognize';
+      $.post( url, { image: imageName } ).done(function(data) {
+        alert( "Data Loaded: " + data );
+      })
     });
   };
 
