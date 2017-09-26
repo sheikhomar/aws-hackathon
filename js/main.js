@@ -47,6 +47,7 @@ $(function() {
       Body: imageBlob
     }, function(err, data) {
       if (err) {
+        console.log(err);
         return alert('There was an error uploading your photo: ', err.message);
       }
       var url = 'https://nwxtvslk82.execute-api.us-east-1.amazonaws.com/prod/ff/recognize';
