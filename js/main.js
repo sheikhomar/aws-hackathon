@@ -19,9 +19,10 @@ $(function() {
     camera.show_stream();
   });
 
-
   var add_snapshot = function(element) {
     $(element).data("snapshot", this).addClass("item");
+
+    console.log('Add snapshot element: ', element);
 
     var $container = $("#snapshots").append(element);
     var $camera = $("#camera");
@@ -47,4 +48,22 @@ $(function() {
       alert('Canvas not supported.');
     }
   });
+
+  var configureS3 = function() {
+    AWS.config.update({
+        region: 'eu-west-1',
+        credentials: new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: 'eu-west-1:15e3a03b-1812-4037-8ae5-1da763037863'
+        })
+    });
+
+    var bucketName = 'aws-hackaton-uploads'
+    var s3 = new AWS.S3({
+      apiVersion: '2006-03-01',
+      params: {Bucket: bucketName}
+    });
+
+    return s3;
+  };
+
 })
