@@ -1,7 +1,9 @@
 $(function() {
   
   var camera;
+  var s3;
 
+  var bucketName = 'aws-hackaton-uploads'
   var options = {
     shutter_ogg_url: "jpeg_camera/shutter.ogg",
     shutter_mp3_url: "jpeg_camera/shutter.mp3",
@@ -22,8 +24,6 @@ $(function() {
   var add_snapshot = function(element) {
     $(element).data("snapshot", this).addClass("item");
 
-    console.log('Add snapshot element: ', element);
-
     var $container = $("#snapshots").append(element);
     var $camera = $("#camera");
     var camera_ratio = $camera.innerWidth() / $camera.innerHeight();
@@ -39,11 +39,20 @@ $(function() {
     }, 200);
   };
 
+  var upload_snapshot = function(imageBlob) {
+    var snapshot = this;
+    var params = {Bucket: bucketName, Key: 'key', Body: imageBlob};
+    s3.upload(params, function(err, data) {
+        console.log(err, data);
+    });
+  };
+
   $('#take_snapshots').click(function() {
     var snapshot = camera.capture();
 
     if (JpegCamera.canvas_supported()) {
       snapshot.get_canvas(add_snapshot);
+      snapshot.get_blob(upload_snapshot);
     } else {
       alert('Canvas not supported.');
     }
@@ -57,7 +66,6 @@ $(function() {
         })
     });
 
-    var bucketName = 'aws-hackaton-uploads'
     var s3 = new AWS.S3({
       apiVersion: '2006-03-01',
       params: {Bucket: bucketName}
@@ -65,5 +73,7 @@ $(function() {
 
     return s3;
   };
+
+  s3 = configureS3();
 
 })
