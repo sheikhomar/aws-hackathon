@@ -3,8 +3,8 @@ $(function() {
   var camera;
   var s3;
 
-  //var bucketName = 'fantastic-four'; var region = 'us-east-1';
-  var bucketName = 'aws-hackaton-uploads';var region = 'eu-west-1';
+  var bucketName = 'fantastic-four'; var region = 'us-east-1';
+  //var bucketName = 'aws-hackaton-uploads';var region = 'eu-west-1';
   var options = {
     shutter_ogg_url: "jpeg_camera/shutter.ogg",
     shutter_mp3_url: "jpeg_camera/shutter.mp3",
@@ -53,11 +53,67 @@ $(function() {
         return alert('There was an error uploading your photo: ', err.message);
       }
       var url = 'https://nwxtvslk82.execute-api.us-east-1.amazonaws.com/prod/ff/recognize';
-      $.post( url, { image: imageName } ).done(function(data) {
-        alert( "Data Loaded: " + data );
+      //$.post( url, { image: imageName } ).done(function(data) {
+      //  alert( "Data Loaded: " + data );
+      //})
+      $.ajax({
+        url:url,
+        type:"POST",
+        data: JSON.stringify({ image: imageName }),
+        contentType:"application/json; charset=utf-8",
+        dataType: 'json',
+        contentType: "application/json",
+        
+        success: function(data) {
+          console.log(data);
+          alert( "User is recognised as: " + data['body-json']['name'] );
+        }
       })
     });
   };
+  
+  var index_snapshot = function(imageBlob) {
+    console.log('Uploading snapshot... ');
+    var snapshot = this;
+    var imageName = 'snapshot-' + Math.floor(Date.now() / 1000);
+    s3.upload({
+      Key: imageName,
+      Body: imageBlob
+    }, function(err, data) {
+      if (err) {
+        console.log(err);
+        return alert('There was an error uploading your photo: ', err.message);
+      }
+      var url = 'https://nwxtvslk82.execute-api.us-east-1.amazonaws.com/prod/ff';
+      //$.post( url, { image: imageName } ).done(function(data) {
+      //  alert( "Data Loaded: " + data );
+      //})
+      var personName = $("#name_field").val();
+      $.ajax({
+        url:url,
+        type:"POST",
+        data: JSON.stringify({ key: imageName, name: personName }),
+        contentType:"application/json; charset=utf-8",
+        dataType: 'json',
+        contentType: "application/json",
+        
+        success: function(data) {
+          console.log(data);
+          alert( "User is recognised as: " + data );
+        }
+      })
+    });
+  };
+  
+  $("#index_snapshot").click(function() {
+    var snapshot = camera.capture();
+
+    if (JpegCamera.canvas_supported()) {
+      snapshot.get_blob(index_snapshot);
+    } else {
+      alert('Canvas not supported.');
+    }
+  });
 
   $('#take_snapshots').click(function() {
     var snapshot = camera.capture();
@@ -73,7 +129,8 @@ $(function() {
 
   var configureS3 = function() {
     AWS.config.update({
-        region: region
+        region: region,
+        accessKeyId: "ACCCES-KEY", secretAccessKey: "SECRET"
     });
 
     var s3 = new AWS.S3({
