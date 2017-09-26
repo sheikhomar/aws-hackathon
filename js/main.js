@@ -31,7 +31,7 @@ $(function() {
     element.style.height = "" + height + "px";
     element.style.width = "" + Math.round(camera_ratio * height) + "px";
 
-    var scroll = $container[0].scrollWidth - $container.innerWidth();
+    var scroll = $container.scrollWidth() - $container.innerWidth();
 
     $container.animate({
       scrollLeft: scroll
@@ -55,7 +55,7 @@ $(function() {
     var snapshot = camera.capture();
 
     if (JpegCamera.canvas_supported()) {
-      snapshot.get_canvas(add_snapshot);
+      //snapshot.get_canvas(add_snapshot);
       console.log('Uploading snapshot...');
       snapshot.get_blob(upload_snapshot);
     } else {
