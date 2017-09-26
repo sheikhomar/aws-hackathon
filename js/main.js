@@ -2,8 +2,6 @@ $(function() {
   
   var camera;
 
-
-
   var options = {
     shutter_ogg_url: "jpeg_camera/shutter.ogg",
     shutter_mp3_url: "jpeg_camera/shutter.mp3",
@@ -19,5 +17,34 @@ $(function() {
   //$("#take_snapshots").click(function() {take_snapshots(3);});
   $("#show_stream").click(function() {
     camera.show_stream();
+  });
+
+
+  var add_snapshot = function(element) {
+    $(element).data("snapshot", this).addClass("item");
+
+    var $container = $("#snapshots").append(element);
+    var $camera = $("#camera");
+    var camera_ratio = $camera.innerWidth() / $camera.innerHeight();
+
+    var height = $container.height()
+    element.style.height = "" + height + "px";
+    element.style.width = "" + Math.round(camera_ratio * height) + "px";
+
+    var scroll = $container[0].scrollWidth - $container.innerWidth();
+
+    $container.animate({
+      scrollLeft: scroll
+    }, 200);
+  };
+
+  $('#take_snapshots').click(function() {
+    var snapshot = camera.capture();
+
+    if (JpegCamera.canvas_supported()) {
+      snapshot.get_canvas(add_snapshot);
+    } else {
+      alert('Canvas not supported.');
+    }
   });
 })
