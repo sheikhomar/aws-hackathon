@@ -1,15 +1,19 @@
-
-
 body {
-  background: #eee;
+}
+
+.buttons {
+  width: 1024px;
+  margin: 0 auto;
+  padding: 10px;
 }
 
 #camera {
-    display: inline-block;
+    display: block;
     background-color: #eee;
-    width: 250px;
-    height: 300px;
-    margin: 0.5em;
+    width: 1024px;
+    height: 768px;
+    margin: 0 auto;
+    border: solid 1px black;
 }
 
 #snapshots {
