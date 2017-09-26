@@ -12,6 +12,7 @@ $(function() {
   camera = new JpegCamera("#camera", options).ready(function(info) {
     // camera is ready
     console.log("Camera resolution: " + info.video_width + "x" + info.video_height);
+    $('#camera').css('height', info.video_height + 'px').css('width',  info.video_width + 'px')
   });
 
   //$("#take_snapshots").click(function() {take_snapshots(3);});
