@@ -18,7 +18,6 @@ $(function() {
 
   //$("#take_snapshots").click(function() {take_snapshots(3);});
   $("#show_stream").click(function() {
-
-
+    camera.show_stream();
   });
 })
