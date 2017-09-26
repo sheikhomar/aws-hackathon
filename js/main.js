@@ -47,7 +47,6 @@ $(function() {
       if (err) {
         return alert('There was an error uploading your photo: ', err.message);
       }
-      alert('Successfully uploaded photo.');
     });
   };
 
