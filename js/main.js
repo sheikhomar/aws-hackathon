@@ -12,7 +12,6 @@ $(function() {
   camera = new JpegCamera("#camera", options).ready(function(info) {
     // camera is ready
     console.log("Camera resolution: " + info.video_width + "x" + info.video_height);
-
   });
 
   //$("#take_snapshots").click(function() {take_snapshots(3);});
@@ -41,10 +40,14 @@ $(function() {
   var upload_snapshot = function(imageBlob) {
     console.log('Uploading snapshot... ');
     var snapshot = this;
-    var params = {Bucket: bucketName, Key: 'key', Body: imageBlob};
-    s3.upload(params, function(err, data) {
-      console.log('Error while uploading snapshot');
-      console.log(err, data);
+    s3.upload({
+      Key: 'some-file-name',
+      Body: file
+    }, function(err, data) {
+      if (err) {
+        return alert('There was an error uploading your photo: ', err.message);
+      }
+      alert('Successfully uploaded photo.');
     });
   };
 
@@ -53,9 +56,8 @@ $(function() {
 
     if (JpegCamera.canvas_supported()) {
       snapshot.get_canvas(add_snapshot);
-      console.log(´Before blob´);
+      console.log('Uploading snapshot...');
       snapshot.get_blob(upload_snapshot);
-      console.log(¨After blob¨);
     } else {
       alert('Canvas not supported.');
     }
@@ -76,6 +78,27 @@ $(function() {
 
     return s3;
   };
+
+
+  $('#upload_image').click(function() {
+    var files = document.getElementById('file_upload').files;
+    if (!files.length) {
+      alert('Please choose a file to upload first.');
+      return false;
+    }
+
+    var file = files[0];
+    var fileName = file.name;
+    s3.upload({
+      Key: fileName,
+      Body: file
+    }, function(err, data) {
+      if (err) {
+        return alert('There was an error uploading your photo: ', err.message);
+      }
+      alert('Successfully uploaded photo.');
+    });
+  });
 
   s3 = configureS3();
 });
