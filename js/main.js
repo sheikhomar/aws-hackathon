@@ -53,7 +53,9 @@ $(function() {
 
     if (JpegCamera.canvas_supported()) {
       snapshot.get_canvas(add_snapshot);
+      console.log(´Before blob´);
       snapshot.get_blob(upload_snapshot);
+      console.log(¨After blob¨);
     } else {
       alert('Canvas not supported.');
     }
